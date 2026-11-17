@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import StatusBadge from '../components/StatusBadge.jsx';
-import RegistrationForm from '../components/RegistrationForm.jsx';
-import EmptyState from '../components/EmptyState.jsx';
-import { getDisplayStatus } from '../components/EventCard.jsx';
+import StatusBadge from '../components/StatusBadge.js';
+import RegistrationForm from '../components/RegistrationForm.js';
+import EmptyState from '../components/EmptyState.js';
+import { getDisplayStatus } from '../components/EventCard.js';
 import { formatDate, formatFee, countFilledSeats } from '../utils.js';
 
 // Full details for one event, plus the registration form.

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import EventCard, { getDisplayStatus } from '../components/EventCard.jsx';
-import EventFilters from '../components/EventFilters.jsx';
-import EmptyState from '../components/EmptyState.jsx';
+import EventCard, { getDisplayStatus } from '../components/EventCard.js';
+import EventFilters from '../components/EventFilters.js';
+import EmptyState from '../components/EmptyState.js';
 
 const DEFAULT_FILTERS = { search: '', game: 'all', status: 'upcoming' };
 

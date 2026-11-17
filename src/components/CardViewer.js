@@ -1,47 +1,32 @@
-import { useEffect, useState } from 'react';
-import CardArt from './CardArt.jsx';
-import ConditionBadge from './ConditionBadge.jsx';
+import { useState } from 'react';
+import CardArt from './CardArt.js';
+import ConditionBadge from './ConditionBadge.js';
 import { formatPrice } from '../utils.js';
 
 // Pop-up with a large view of a card.
 //  - Thumbnails switch between Front, Back, or both side by side
-//  - Clicking the image zooms in 2.5x; moving the mouse pans around the card
+//  - Clicking the image zooms in 2.5x; scroll inside the box to inspect corners and edges
 function CardViewer({ card, onClose }) {
   const [view, setView] = useState('front'); // 'front' | 'back' | 'both'
   const [zoomed, setZoomed] = useState(false);
-  const [origin, setOrigin] = useState('50% 50%');
 
-  // Close with the Escape key, and stop the page behind from scrolling while open.
-  useEffect(() => {
-    function handleKey(e) {
-      if (e.key === 'Escape') onClose();
-    }
-    window.addEventListener('keydown', handleKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
-    };
-  }, [onClose]);
-
-  function changeView(newView) {
+  function handleChangeView(newView) {
     setView(newView);
     setZoomed(false);
   }
 
-  // Zoom towards the point under the mouse.
-  function handleMove(e) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setOrigin(`${x}% ${y}%`);
+  function handleToggleZoom() {
+    setZoomed((prevZoomed) => !prevZoomed);
   }
 
-  const zoomStyle = { transformOrigin: origin, transform: zoomed ? 'scale(2.5)' : 'none' };
+  // When zoomed, the card is drawn 2.5x wider inside a scrollable box.
+  const zoomStyle = { width: zoomed ? '250%' : '100%' };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal card-viewer" role="dialog" aria-modal="true" aria-label={card.name} onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay">
+      {/* Clicking the dark backdrop closes the viewer */}
+      <div className="modal-backdrop" onClick={onClose}></div>
+      <div className="modal card-viewer" role="dialog" aria-label={card.name}>
         <button className="modal-close" onClick={onClose} aria-label="Close">
           ×
         </button>
@@ -53,28 +38,24 @@ function CardViewer({ card, onClose }) {
               <CardArt card={card} side="back" />
             </div>
           ) : (
-            <div
-              className={`viewer-stage ${zoomed ? 'zoomed' : ''}`}
-              onClick={() => setZoomed(!zoomed)}
-              onMouseMove={handleMove}
-            >
+            <div className={`viewer-stage ${zoomed ? 'zoomed' : ''}`} onClick={handleToggleZoom}>
               <div className="viewer-zoom" style={zoomStyle}>
                 <CardArt card={card} side={view} />
               </div>
             </div>
           )}
           <p className="muted viewer-hint">
-            {view === 'both' ? 'Pick one side to zoom in.' : zoomed ? 'Move to inspect · click to zoom out' : 'Click the card to zoom in'}
+            {view === 'both' ? 'Pick one side to zoom in.' : zoomed ? 'Scroll to inspect · click to zoom out' : 'Click the card to zoom in'}
           </p>
 
           <div className="viewer-thumbs" role="group" aria-label="Choose view">
             {['front', 'back'].map((side) => (
-              <button key={side} className={`thumb ${view === side ? 'active' : ''}`} onClick={() => changeView(side)}>
+              <button key={side} className={`thumb ${view === side ? 'active' : ''}`} onClick={() => handleChangeView(side)}>
                 <CardArt card={card} side={side} />
                 <span>{side === 'front' ? 'Front' : 'Back'}</span>
               </button>
             ))}
-            <button className={`thumb thumb-both ${view === 'both' ? 'active' : ''}`} onClick={() => changeView('both')}>
+            <button className={`thumb thumb-both ${view === 'both' ? 'active' : ''}`} onClick={() => handleChangeView('both')}>
               <div className="thumb-pair">
                 <CardArt card={card} side="front" />
                 <CardArt card={card} side="back" />

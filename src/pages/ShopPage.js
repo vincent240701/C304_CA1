@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import CardListing from '../components/CardListing.jsx';
-import CardFilters from '../components/CardFilters.jsx';
-import CardViewer from '../components/CardViewer.jsx';
-import EmptyState from '../components/EmptyState.jsx';
+import CardListing from '../components/CardListing.js';
+import CardFilters from '../components/CardFilters.js';
+import CardViewer from '../components/CardViewer.js';
+import EmptyState from '../components/EmptyState.js';
 
 const DEFAULT_FILTERS = {
   search: '',
@@ -35,8 +35,8 @@ function sortCards(list, sort) {
     case 'name-asc':
       return sorted.sort((a, b) => a.name.localeCompare(b.name));
     case 'number-asc':
-      // numeric: true so "41" comes before "112"
-      return sorted.sort((a, b) => a.cardNumber.localeCompare(b.cardNumber, undefined, { numeric: true }));
+      // card numbers are zero-padded (e.g. "041/165"), so text order = number order
+      return sorted.sort((a, b) => a.cardNumber.localeCompare(b.cardNumber));
     default:
       return sorted;
   }
@@ -47,11 +47,15 @@ function ShopPage({ cards }) {
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
-  // Options that depend on the data
-  const setOptions = [
-    ...new Set(cards.filter((c) => filters.game === 'all' || c.game === filters.game).map((c) => c.set)),
-  ].sort();
-  const yearOptions = [...new Set(cards.map((c) => c.year))].sort((a, b) => b - a);
+  // Dropdown options that depend on the data.
+  // reduce() walks through the cards and only adds a value the first time it is seen (no duplicates).
+  const setOptions = cards
+    .filter((c) => filters.game === 'all' || c.game === filters.game)
+    .reduce((list, c) => (list.includes(c.set) ? list : [...list, c.set]), [])
+    .sort();
+  const yearOptions = cards
+    .reduce((list, c) => (list.includes(c.year) ? list : [...list, c.year]), [])
+    .sort((a, b) => b - a);
 
   const search = filters.search.trim().toLowerCase();
   const filteredCards = sortCards(

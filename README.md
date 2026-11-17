@@ -54,7 +54,7 @@ Players already discover events online on their phones. A web app works on any d
 |---|---|---|
 | **Home** | Player | Two slowly scrolling looping "conveyor belts" (pause on hover): all upcoming events, and shop cards (click one to open the card viewer). Each has a "See all" link to Events / Shop |
 | **Events** | Player | All events as cards; search by title; filter by game and status; result count; "no results" empty state |
-| **Shop** | Player | Grid of single cards (image, name, set · number, condition/grade, price) with Front/Back switch on each tile; filters by game, set, rarity, condition (raw grades or graded only), year, plus name/card-number search and 7 sort options; click a card for a viewer with click-to-zoom (pan with mouse), Front / Back / side-by-side thumbnails, and full details (centering, grade, notes, stock). Grid is 2 square-ish tiles per row on mobile |
+| **Shop** | Player | Grid of single cards (image, name, set · number, condition/grade, price) with Front/Back switch on each tile; filters by game, set, rarity, condition (raw grades or graded only), year, plus name/card-number search and 7 sort options; click a card for a viewer with click-to-zoom (2.5×, scroll to inspect), Front / Back / side-by-side thumbnails, and full details (centering, grade, notes, stock). Grid is 2 square-ish tiles per row on mobile |
 | **Event Detail** | Player | Full event info, seat count, status badge; registration form with validation; waitlist when full; message if already registered or registration closed |
 | **My Registrations** | Player | List of own registrations with status; cancel with confirmation; toggle to show cancelled; empty state |
 | **Staff Dashboard** | Staff | Tab 1: pick an event, see attendees, check in / undo / promote from waitlist. Tab 2: create event form with validation and success message |
@@ -72,7 +72,7 @@ Home ──"See all"──────► Events ──click card──► Event
 Staff ──► [Attendees & check-in]  ⇄  [Create event]
 ```
 
-Navigation is handled with React state (`currentPage` in `App.jsx`) for CA1. It is designed so that each `case` in `renderPage()` maps directly to a React Router route later:
+Navigation is handled with React state (`currentPage` in `App.js`) for CA1. It is designed so that each `case` in `renderPage()` maps directly to a React Router route later:
 
 | Page | Planned route |
 |---|---|
@@ -107,7 +107,7 @@ App  (state: currentPage, selectedEventId, events, registrations)
 │   │   ├── CardListing ×n (state: side; props: card, onSelect)
 │   │   │   ├── CardArt    (props: card, side)
 │   │   │   └── ConditionBadge
-│   │   ├── CardViewer     (state: view, zoomed, origin; props: card, onClose)
+│   │   ├── CardViewer     (state: view, zoomed; props: card, onClose)
 │   │   └── EmptyState
 │   ├── EventDetailPage    (state: resultStatus)
 │   │   ├── StatusBadge
@@ -126,8 +126,8 @@ App  (state: currentPage, selectedEventId, events, registrations)
 ### Folder structure
 ```
 src/
-├── App.jsx              # top-level state + page switching
-├── main.jsx             # React entry point
+├── App.js              # top-level state + page switching
+├── main.js             # React entry point
 ├── index.css            # global styles
 ├── utils.js             # formatDate, formatFee, countFilledSeats
 ├── data/                # mock data (one file per future DB table)
@@ -135,14 +135,14 @@ src/
 │   ├── mockRegistrations.js
 │   └── mockUsers.js
 ├── components/          # reusable UI pieces
-│   ├── Navbar.jsx, Footer.jsx
-│   ├── EventCard.jsx, StatusBadge.jsx, EmptyState.jsx
-│   ├── EventFilters.jsx, RegistrationForm.jsx
-│   └── EventForm.jsx, AttendeeList.jsx
+│   ├── Navbar.js, Footer.js
+│   ├── EventCard.js, StatusBadge.js, EmptyState.js
+│   ├── EventFilters.js, RegistrationForm.js
+│   └── EventForm.js, AttendeeList.js
 └── pages/               # one file per page/view
-    ├── HomePage.jsx, EventsPage.jsx, EventDetailPage.jsx
-    ├── MyRegistrationsPage.jsx
-    └── AdminPage.jsx
+    ├── HomePage.js, EventsPage.js, EventDetailPage.js
+    ├── MyRegistrationsPage.js
+    └── AdminPage.js
 ```
 
 ### How the CA1 requirements are covered
@@ -236,7 +236,7 @@ Relationships: one **User** has many **Registrations**; one **Event** has many *
 | POST | `/api/auth/register` | Sign up | `{ name, email, password }` | `201` + user |
 | POST | `/api/auth/login` | Log in | `{ email, password }` | `{ token, user }` |
 
-In `App.jsx`, each handler (`registerForEvent`, `updateRegistrationStatus`, `addEvent`) is commented with the endpoint it will call, so CA2 only needs to swap the state update for a `fetch()` call.
+In `App.js`, each handler (`registerForEvent`, `updateRegistrationStatus`, `addEvent`) is commented with the endpoint it will call, so CA2 only needs to swap the state update for a `fetch()` call.
 
 ---
 
@@ -249,7 +249,7 @@ In `App.jsx`, each handler (`registerForEvent`, `updateRegistrationStatus`, `add
 | Member A | | `HomePage`, `EventsPage`, `EventCard`, `EventFilters`, search & filter feature |
 | Member B | | `EventDetailPage`, `RegistrationForm`, `MyRegistrationsPage`, register/waitlist/cancel flow |
 | Member C | | `AdminPage`, `EventForm`, `AttendeeList`, check-in feature |
-| Shared | | `App.jsx`, `Navbar`, `Footer`, `StatusBadge`, `EmptyState`, mock data, styles |
+| Shared | | `App.js`, `Navbar`, `Footer`, `StatusBadge`, `EmptyState`, mock data, styles |
 
 ### Individual evidence (each member fills in)
 - **Contribution summary:**

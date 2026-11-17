@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import Navbar from './components/Navbar.jsx';
-import Footer from './components/Footer.jsx';
-import HomePage from './pages/HomePage.jsx';
-import EventsPage from './pages/EventsPage.jsx';
-import EventDetailPage from './pages/EventDetailPage.jsx';
-import MyRegistrationsPage from './pages/MyRegistrationsPage.jsx';
-import AdminPage from './pages/AdminPage.jsx';
-import ShopPage from './pages/ShopPage.jsx';
+import Navbar from './components/Navbar.js';
+import Footer from './components/Footer.js';
+import HomePage from './pages/HomePage.js';
+import EventsPage from './pages/EventsPage.js';
+import EventDetailPage from './pages/EventDetailPage.js';
+import MyRegistrationsPage from './pages/MyRegistrationsPage.js';
+import AdminPage from './pages/AdminPage.js';
+import ShopPage from './pages/ShopPage.js';
 import { mockEvents } from './data/mockEvents.js';
 import { mockCards } from './data/mockCards.js';
 import { mockRegistrations } from './data/mockRegistrations.js';
 import { mockUsers, CURRENT_USER_ID } from './data/mockUsers.js';
-import { getDisplayStatus } from './components/EventCard.jsx';
+import { getDisplayStatus } from './components/EventCard.js';
 
 // App is the top-level component. It:
 //  1. keeps the "database" (events + registrations) in state, so every page sees the same data
@@ -28,7 +28,6 @@ function App() {
 
   function navigate(page) {
     setCurrentPage(page);
-    window.scrollTo(0, 0);
   }
 
   function openEvent(eventId) {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import EventCard, { getDisplayStatus } from '../components/EventCard.jsx';
-import CardListing from '../components/CardListing.jsx';
-import CardViewer from '../components/CardViewer.jsx';
-import Conveyor from '../components/Conveyor.jsx';
+import EventCard, { getDisplayStatus } from '../components/EventCard.js';
+import CardListing from '../components/CardListing.js';
+import CardViewer from '../components/CardViewer.js';
+import Conveyor from '../components/Conveyor.js';
 
 // Landing page: upcoming events and shop cards, each on a moving "conveyor belt".
 function HomePage({ events, registrations, cards, onSelectEvent, onNavigate }) {

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import EventForm from '../components/EventForm.jsx';
-import AttendeeList from '../components/AttendeeList.jsx';
+import EventForm from '../components/EventForm.js';
+import AttendeeList from '../components/AttendeeList.js';
 import { countFilledSeats, formatDate } from '../utils.js';
 
 // Staff dashboard: two tabs – manage attendees, or create a new event.
 function AdminPage({ events, registrations, onAddEvent, onUpdateRegistration }) {
   const [tab, setTab] = useState('attendees');
-  const [selectedId, setSelectedId] = useState(events[0]?.id || '');
+  const [selectedId, setSelectedId] = useState(events.length > 0 ? events[0].id : '');
 
   const attendees = registrations.filter((r) => r.eventId === selectedId && r.status !== 'cancelled');
   const selectedEvent = events.find((e) => e.id === selectedId);

@@ -1,5 +1,5 @@
-import StatusBadge from './StatusBadge.jsx';
-import EmptyState from './EmptyState.jsx';
+import StatusBadge from './StatusBadge.js';
+import EmptyState from './EmptyState.js';
 
 // Staff view of everyone registered for one event, with check-in toggle.
 function AttendeeList({ attendees, onUpdate }) {

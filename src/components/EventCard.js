@@ -1,4 +1,4 @@
-import StatusBadge from './StatusBadge.jsx';
+import StatusBadge from './StatusBadge.js';
 import { formatDate, formatFee, countFilledSeats } from '../utils.js';
 
 // Works out what status to SHOW: cancelled/completed come from the event itself,
